@@ -5,8 +5,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { Lottery } from "../build/Lottery/Lottery_Lottery.js";
 
-const DAILY_PRICE = toNano("10000");
-const WEEKLY_PRICE = toNano("50000");
+const DAILY_PRICE = toNano("1000");
+const WEEKLY_PRICE = toNano("5000");
 const DAY_SECONDS = 86_400;
 const WEEK_SECONDS = 604_800;
 const START_TIME = 1_767_225_600; // 2026-01-01T00:00:00Z, Thursday
@@ -165,7 +165,7 @@ describe("Lottery", () => {
     });
   });
 
-  it("lets only the owner set pending prices and applies each price after that pool draws", async () => {
+  it("applies owner price changes immediately for empty pools", async () => {
     const nonOwner = await lottery.send(
       alice.getSender(),
       { value: toNano("0.05") },
@@ -176,6 +176,27 @@ describe("Lottery", () => {
       to: lottery.address,
       success: false
     });
+
+    await lottery.send(
+      deployer.getSender(),
+      { value: toNano("0.05") },
+      { $$type: "SetDailyTicketPrice", price: toNano("12000") }
+    );
+    await lottery.send(
+      deployer.getSender(),
+      { value: toNano("0.05") },
+      { $$type: "SetWeeklyTicketPrice", price: toNano("150000") }
+    );
+
+    expect(await lottery.getGetDailyTicketPrice()).toBe(toNano("12000"));
+    expect(await lottery.getGetNextDailyTicketPrice()).toBe(toNano("12000"));
+    expect(await lottery.getGetWeeklyTicketPrice()).toBe(toNano("150000"));
+    expect(await lottery.getGetNextWeeklyTicketPrice()).toBe(toNano("150000"));
+  });
+
+  it("defers owner price changes until draw when a pool has participants", async () => {
+    await lottery.send(alice.getSender(), { value: DAILY_PRICE }, "BuyDailyTicket");
+    await lottery.send(alice.getSender(), { value: WEEKLY_PRICE }, "BuyWeeklyTicket");
 
     await lottery.send(
       deployer.getSender(),

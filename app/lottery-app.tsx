@@ -656,8 +656,8 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
               </>
             ) : (
               <>
-                <Metric label="Daily ticket" value={state ? formatIon(state.daily.ticketPrice) : "10,000 ION"} icon={<Ticket />} />
-                <Metric label="Weekly ticket" value={state ? formatIon(state.weekly.ticketPrice) : "50,000 ION"} icon={<Trophy />} />
+                <Metric label="Daily ticket" value={state ? formatIon(state.daily.ticketPrice) : "1,000 ION"} icon={<Ticket />} />
+                <Metric label="Weekly ticket" value={state ? formatIon(state.weekly.ticketPrice) : "5,000 ION"} icon={<Trophy />} />
                 <Metric label="Wallet" value={connectedAddress ? shortAddress(connectedAddress) : "Not connected"} icon={<WalletCards />} />
                 <Metric label={state?.instantDraws ? "Test mode" : "Winner payout"} value={state?.instantDraws ? "Instant draws" : "80%"} icon={<CircleDollarSign />} />
               </>
@@ -839,6 +839,7 @@ function PoolCard({
   const ready = now >= Number(pool.drawUnlockAt);
   const entered = pool.hasTicket === true;
   const prize = splitIon(pool.pool);
+  const hasPendingPrice = pool.nextTicketPrice !== pool.ticketPrice;
 
   return (
     <article className={`pool-card ${pool.key}`}>
@@ -872,6 +873,12 @@ function PoolCard({
           <dt>Ticket</dt>
           <dd>{formatIon(pool.ticketPrice)}</dd>
         </div>
+        {hasPendingPrice ? (
+          <div>
+            <dt>Next ticket</dt>
+            <dd>{formatIon(pool.nextTicketPrice)}</dd>
+          </div>
+        ) : null}
         <div>
           <dt>Last prize</dt>
           <dd>{formatIon(pool.lastPrize)}</dd>

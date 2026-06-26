@@ -17,8 +17,8 @@ console.log(`Owner: ${ownerAddress.toString({ bounceable: false, urlSafe: true }
 console.log(`Balance: ${balance.toString()} nanoION (${formatIon(balance)})`);
 console.log(`Instant draws: ${instantDraws ? "yes" : "no"}`);
 console.log(`Predicted contract: ${lottery.address.toString({ bounceable: false, urlSafe: true })}`);
-console.log(`Initial daily ticket: ${formatIon(toNano("10000"))}`);
-console.log(`Initial weekly ticket: ${formatIon(toNano("50000"))}`);
+console.log(`Initial daily ticket: ${formatIon(toNano("1000"))}`);
+console.log(`Initial weekly ticket: ${formatIon(toNano("5000"))}`);
 
 if (balance < toNano("2")) {
   throw new Error("Deployer balance is below 2 ION. Fund the wallet before deploying.");

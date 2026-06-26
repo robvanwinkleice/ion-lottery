@@ -11,7 +11,7 @@ export default function DocsPage() {
             <Ticket />
           </span>
           <span className="info-label">Tickets</span>
-          <p>Daily tickets start at 10,000 ION. Weekly tickets start at 100,000 ION.</p>
+          <p>Daily tickets start at 1,000 ION. Weekly tickets start at 5,000 ION.</p>
         </article>
         <article className="info-card">
           <span className="info-icon">

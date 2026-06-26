@@ -2,7 +2,7 @@
 
 ## Summary
 
-Replace the hello-world contract with one `Lottery` contract that manages two independent pools: daily and weekly. Daily tickets start at `1 ION`, weekly tickets start at `1 ION`, draws are permissionless after each UTC cutoff, and the owner can set future ticket prices plus withdraw the shared retained 20% fees.
+Replace the hello-world contract with one `Lottery` contract that manages two independent pools: daily and weekly. Daily tickets start at `1,000 ION`, weekly tickets start at `5,000 ION`, draws are permissionless after each UTC cutoff, and the owner can set future ticket prices plus withdraw the shared retained 20% fees.
 
 ## Key Changes
 
@@ -11,8 +11,8 @@ Replace the hello-world contract with one `Lottery` contract that manages two in
   - Weekly: same fields, independent from daily.
   - Shared: `owner` and `retainedFees`.
 - Initial prices:
-  - Daily: `1 ION`.
-  - Weekly: `1 ION`.
+  - Daily: `1,000 ION`.
+  - Weekly: `5,000 ION`.
 - Timing:
   - Daily tickets close at `23:59:59` UTC; `DrawDaily` is valid from `00:00:00` UTC the next day.
   - Weekly tickets close Sunday at `23:59:59` UTC; `DrawWeekly` is valid from Monday `00:00:00` UTC.

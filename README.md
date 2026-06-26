@@ -20,8 +20,8 @@ The project contains a Tact smart contract and a dark-mode Next.js frontend. Pla
 
 ## Current Defaults
 
-- Daily ticket: `10,000 ION`
-- Weekly ticket: `50,000 ION`
+- Daily ticket: `1,000 ION`
+- Weekly ticket: `5,000 ION`
 - Daily draw: `00:00:00 UTC`
 - Weekly draw: Monday `00:00:00 UTC`
 - Payout: `80%`

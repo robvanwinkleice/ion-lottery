@@ -51,8 +51,8 @@ contract Lottery {
         self.instantDraws = instantDraws;
         self.retainedFees = 0;
 
-        self.dailyTicketPrice = ton("10000");
-        self.nextDailyTicketPrice = ton("10000");
+        self.dailyTicketPrice = ton("1000");
+        self.nextDailyTicketPrice = ton("1000");
         self.dailyRound = 1;
         if (instantDraws) {
             self.dailyDrawUnlockAt = now();
@@ -66,8 +66,8 @@ contract Lottery {
         self.lastDailyWinner = null;
         self.lastDailyPrize = 0;
 
-        self.weeklyTicketPrice = ton("50000");
-        self.nextWeeklyTicketPrice = ton("50000");
+        self.weeklyTicketPrice = ton("5000");
+        self.nextWeeklyTicketPrice = ton("5000");
         self.weeklyRound = 1;
         if (instantDraws) {
             self.weeklyDrawUnlockAt = now();
@@ -108,12 +108,18 @@ contract Lottery {
         self.requireOwner();
         require(msg.price > 0, "Invalid price");
         self.nextDailyTicketPrice = msg.price;
+        if (self.dailyParticipantCount == 0) {
+            self.dailyTicketPrice = msg.price;
+        }
     }
 
     receive(msg: SetWeeklyTicketPrice) {
         self.requireOwner();
         require(msg.price > 0, "Invalid price");
         self.nextWeeklyTicketPrice = msg.price;
+        if (self.weeklyParticipantCount == 0) {
+            self.weeklyTicketPrice = msg.price;
+        }
     }
 
     fun requireOwner() {
