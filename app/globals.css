@@ -641,15 +641,13 @@ input:focus {
   background: var(--outline);
 }
 
-.state-pill.ready,
-.pool-card.daily .state-pill {
+.state-pill.ready {
   color: var(--primary);
   border-color: rgba(202, 245, 255, 0.24);
   background: rgba(202, 245, 255, 0.08);
 }
 
-.state-pill.ready span,
-.pool-card.daily .state-pill span {
+.state-pill.ready span {
   background: var(--primary);
   box-shadow: 0 0 10px rgba(202, 245, 255, 0.55);
 }
