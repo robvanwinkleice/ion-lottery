@@ -21,6 +21,8 @@
   --primary-fixed-dim: #56d7ef;
   --secondary: #a6c8ff;
   --secondary-container: #3192fc;
+  --success: #7df2a1;
+  --success-container: rgba(125, 242, 161, 0.1);
   --error: #ffb4ab;
   --shadow: 0 24px 64px rgba(0, 0, 0, 0.34);
 }
@@ -624,10 +626,10 @@ input:focus {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(61, 73, 76, 0.62);
+  border: 1px solid rgba(125, 242, 161, 0.3);
   border-radius: 999px;
-  background: rgba(9, 15, 21, 0.72);
-  color: var(--on-surface-variant);
+  background: var(--success-container);
+  color: var(--success);
   padding: 0 16px;
   font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   font-size: 14px;
@@ -638,7 +640,8 @@ input:focus {
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  background: var(--outline);
+  background: var(--success);
+  box-shadow: 0 0 10px rgba(125, 242, 161, 0.48);
 }
 
 .state-pill.ready {
