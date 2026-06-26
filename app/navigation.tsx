@@ -23,10 +23,6 @@ function hrefFor(section: RailSection, locale: Locale) {
   return railItems.find((item) => item.section === section)?.href[locale] ?? "/";
 }
 
-function switchHref(section: RailSection, locale: Locale) {
-  return `${hrefFor(section, locale)}?lang=${locale}`;
-}
-
 export function SideRail({ active, locale = "en" }: { active: RailSection; locale?: Locale }) {
   return (
     <aside className="side-rail" aria-label="Primary navigation">
@@ -90,7 +86,7 @@ export function StaticPageShell({
         <header className="topbar">
           <BrandLink locale={locale} />
           <div className="topbar-actions">
-            <Link className="nav-link" href={switchHref(active, locale === "zh" ? "en" : "zh")}>
+            <Link className="nav-link" href={hrefFor(active, locale === "zh" ? "en" : "zh")}>
               {locale === "zh" ? "English" : "中文"}
             </Link>
             <Link className="wallet-button" href={locale === "zh" ? "/zh" : "/"}>

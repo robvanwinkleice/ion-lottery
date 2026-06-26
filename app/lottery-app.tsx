@@ -694,7 +694,7 @@ export default function LotteryApp({ mode, locale = "en" }: { mode: AppMode; loc
                 </Link>
               </nav>
             ) : (
-              <Link className="nav-link" href={locale === "zh" ? "/?lang=en" : "/zh?lang=zh"}>
+              <Link className="nav-link" href={locale === "zh" ? "/" : "/zh"}>
                 {locale === "zh" ? "English" : "中文"}
               </Link>
             )}
