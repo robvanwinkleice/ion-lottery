@@ -851,7 +851,7 @@ function PoolCard({
         </div>
         <span className={`state-pill ${ready ? "ready" : ""}`}>
           <span />
-          {instantDraws ? "Test mode" : ready ? "Draw open" : pool.key === "daily" ? "Live" : "Waiting"}
+          {instantDraws ? "Test mode" : ready ? "Draw open" : "Live"}
         </span>
       </div>
       <div className="pool-prize">
