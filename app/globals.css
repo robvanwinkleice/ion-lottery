@@ -644,6 +644,17 @@ input:focus {
   box-shadow: 0 0 10px rgba(125, 242, 161, 0.48);
 }
 
+.state-pill.live {
+  color: var(--success);
+  border-color: rgba(125, 242, 161, 0.38);
+  background: rgba(125, 242, 161, 0.12);
+}
+
+.state-pill.live span {
+  background: var(--success);
+  box-shadow: 0 0 12px rgba(125, 242, 161, 0.72);
+}
+
 .state-pill.ready {
   color: var(--primary);
   border-color: rgba(202, 245, 255, 0.24);

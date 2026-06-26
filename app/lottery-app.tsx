@@ -13,7 +13,7 @@ import {
   WalletCards,
   WalletMinimal
 } from "lucide-react";
-import { BrandLink, Footer, SideRail } from "./navigation";
+import { BrandLink, Footer, SideRail, type Locale } from "./navigation";
 
 type PoolKey = "daily" | "weekly";
 type AppMode = "user" | "admin";
@@ -77,6 +77,115 @@ const ENDPOINT_STORAGE_KEY = "ion-lottery.endpoint";
 const USER_REFRESH_INTERVAL_MS = 8000;
 const ADMIN_REFRESH_INTERVAL_MS = 15000;
 
+const userCopy = {
+  en: {
+    missingContract: "Lottery is not live yet.",
+    runtimeLoading: "Wallet runtime is still loading.",
+    updatingPools: "Updating pools.",
+    poolsUpdated: "Pools updated.",
+    walletUnavailable: "ION Wallet is installed but not available on this page. Allow site access for localhost in Chrome, then refresh.",
+    unlockWallet: "Unlock ION Wallet and select an account.",
+    walletConnected: "ION Wallet connected.",
+    walletDisconnected: "ION Wallet disconnected locally.",
+    connectWallet: "Connect ION Wallet",
+    confirmTransaction: (label: string) => `Confirm ${label} in ION Wallet.`,
+    transactionNotSent: (label: string) => `${label} was not sent.`,
+    transactionSent: (label: string) => `${label} sent. Waiting for confirmation.`,
+    dailyBuy: "Buy daily ticket",
+    weeklyBuy: "Buy weekly ticket",
+    eyebrow: "Daily and weekly ION pools",
+    title: "Play the daily and weekly ION lottery.",
+    dailyTicket: "Daily ticket",
+    weeklyTicket: "Weekly ticket",
+    wallet: "Wallet",
+    notConnected: "Not connected",
+    testMode: "Test mode",
+    winnerPayout: "Winner payout",
+    instantDraws: "Instant draws",
+    lotteryMetrics: "Lottery metrics",
+    lotteryPools: "Lottery pools",
+    daily: "Daily",
+    weekly: "Weekly",
+    round: "Round",
+    drawOpen: "Draw open",
+    live: "Live",
+    pool: "Pool",
+    drawWindow: "Draw window",
+    anytime: "Anytime",
+    entries: "Entries",
+    ticket: "Ticket",
+    nextTicket: "Next ticket",
+    lastPrize: "Last prize",
+    lastWinner: "Last winner",
+    confirming: "Confirming",
+    entered: "Entered",
+    buyTicket: "Buy ticket",
+    draw: "Draw",
+    waiting: "Waiting",
+    loading: "Loading",
+    none: "None",
+    ready: "Ready",
+    endsIn: "Ends in",
+    drawsIn: "Draws in",
+    day: "day",
+    days: "days"
+  },
+  zh: {
+    missingContract: "彩票尚未上线。",
+    runtimeLoading: "钱包运行环境仍在加载。",
+    updatingPools: "正在更新奖池。",
+    poolsUpdated: "奖池已更新。",
+    walletUnavailable: "已安装 ION Wallet，但当前页面无法访问。请在 Chrome 中允许 localhost 访问后刷新。",
+    unlockWallet: "请解锁 ION Wallet 并选择账户。",
+    walletConnected: "ION Wallet 已连接。",
+    walletDisconnected: "ION Wallet 已在本地断开连接。",
+    connectWallet: "连接 ION Wallet",
+    confirmTransaction: (label: string) => `请在 ION Wallet 中确认${label}。`,
+    transactionNotSent: (label: string) => `${label}未发送。`,
+    transactionSent: (label: string) => `${label}已发送，等待确认。`,
+    dailyBuy: "购买每日彩票",
+    weeklyBuy: "购买每周彩票",
+    eyebrow: "每日和每周 ION 奖池",
+    title: "参与每日和每周 ION 彩票。",
+    dailyTicket: "每日票价",
+    weeklyTicket: "每周票价",
+    wallet: "钱包",
+    notConnected: "未连接",
+    testMode: "测试模式",
+    winnerPayout: "中奖分配",
+    instantDraws: "即时开奖",
+    lotteryMetrics: "彩票指标",
+    lotteryPools: "彩票奖池",
+    daily: "每日",
+    weekly: "每周",
+    round: "轮次",
+    drawOpen: "可开奖",
+    live: "开放中",
+    pool: "奖池",
+    drawWindow: "开奖窗口",
+    anytime: "随时",
+    entries: "参与人数",
+    ticket: "票价",
+    nextTicket: "下轮票价",
+    lastPrize: "上次奖金",
+    lastWinner: "上次赢家",
+    confirming: "确认中",
+    entered: "已参与",
+    buyTicket: "购买彩票",
+    draw: "开奖",
+    waiting: "等待中",
+    loading: "加载中",
+    none: "无",
+    ready: "已就绪",
+    endsIn: "距离结束",
+    drawsIn: "距离开奖",
+    day: "天",
+    days: "天"
+  }
+} satisfies Record<Locale, Record<string, string | ((label: string) => string)>>;
+
+type UserCopy = typeof userCopy.en;
+
 let runtimePromise: Promise<RuntimeKit> | null = null;
 
 async function loadRuntime() {
@@ -106,7 +215,7 @@ async function loadRuntime() {
   return runtimePromise;
 }
 
-export default function LotteryApp({ mode }: { mode: AppMode }) {
+export default function LotteryApp({ mode, locale = "en" }: { mode: AppMode; locale?: Locale }) {
   const [runtime, setRuntime] = useState<RuntimeKit | null>(null);
   const [ionProvider, setIonProvider] = useState<IonProvider | null>(null);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -122,6 +231,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
   const [now, setNow] = useState(() => Math.floor(Date.now() / 1000));
   const loadingRef = useRef(false);
   const isAdmin = mode === "admin";
+  const copy: UserCopy = isAdmin ? userCopy.en : userCopy[locale];
 
   const setStatus = useCallback((message: string, kind: "idle" | "ok" | "error" = "idle") => {
     setStatusText(message);
@@ -215,7 +325,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
 
   const owner = !!connectedAddress && !!state && connectedAddress === state.owner;
   const showAdminGate = isAdmin && !owner;
-  const missingContractMessage = isAdmin ? "Enter a contract address." : "Lottery is not live yet.";
+  const missingContractMessage = isAdmin ? "Enter a contract address." : copy.missingContract;
   const showStatus = isAdmin || loading || statusKind !== "idle" || statusText !== "Ready.";
 
   const lotteryContract = useCallback(() => {
@@ -231,7 +341,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
   const loadState = useCallback(async ({ silent = false }: { silent?: boolean } = {}) => {
     if (!runtime) {
       if (!silent) {
-        setStatus("Wallet runtime is still loading.");
+        setStatus(copy.runtimeLoading);
       }
       return;
     }
@@ -248,7 +358,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
     loadingRef.current = true;
     if (!silent) {
       setLoading(true);
-      setStatus(isAdmin ? "Refreshing lottery state." : "Updating pools.");
+      setStatus(isAdmin ? "Refreshing lottery state." : copy.updatingPools);
     }
 
     try {
@@ -340,7 +450,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
         localStorage.setItem(ENDPOINT_STORAGE_KEY, endpoint);
       }
       if (!silent) {
-        setStatus(isAdmin ? "State refreshed." : "Pools updated.", "ok");
+        setStatus(isAdmin ? "State refreshed." : copy.poolsUpdated, "ok");
       }
     } catch (error) {
       if (!silent) {
@@ -414,7 +524,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
 
     const provider = ionProvider ?? (await waitForIonProvider(8000));
     if (!provider) {
-      setStatus("ION Wallet is installed but not available on this page. Allow site access for localhost in Chrome, then refresh.", "error");
+      setStatus(copy.walletUnavailable, "error");
       return null;
     }
 
@@ -422,12 +532,12 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
     const accounts = await requestIonAccounts(provider);
     const address = normalizeWalletAddress(runtime, accounts[0]);
     if (!address) {
-      setStatus("Unlock ION Wallet and select an account.", "error");
+      setStatus(copy.unlockWallet, "error");
       return null;
     }
 
     setWalletAddress(address);
-    setStatus("ION Wallet connected.", "ok");
+    setStatus(copy.walletConnected, "ok");
     return address;
   }
 
@@ -435,7 +545,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
     if (connectedAddress) {
       setWalletAddress(null);
       setPendingBuyRounds({});
-      setStatus("ION Wallet disconnected locally.");
+      setStatus(copy.walletDisconnected);
       return;
     }
 
@@ -444,7 +554,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
 
   async function sendTransaction(label: string, amount: bigint, body: string) {
     if (!runtime) {
-      setStatus("Wallet runtime is still loading.");
+      setStatus(copy.runtimeLoading);
       return false;
     }
     if (!contractAddressText.trim()) {
@@ -461,7 +571,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
       return false;
     }
 
-    setStatus(`Confirm ${label} in ION Wallet.`);
+    setStatus(copy.confirmTransaction(label));
     try {
       const sent = await provider.send("ton_sendTransaction", [{
         to: runtime.Address.parse(contractAddressText).toString({
@@ -473,10 +583,10 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
         dataType: "boc"
       }]);
       if (!sent) {
-        setStatus(`${label} was not sent.`, "error");
+        setStatus(copy.transactionNotSent(label), "error");
         return false;
       }
-      setStatus(`${label} sent. Waiting for confirmation.`, "ok");
+      setStatus(copy.transactionSent(label), "ok");
       window.setTimeout(() => void loadState({ silent: true }), 5000);
       window.setTimeout(() => void loadState({ silent: true }), 15000);
       return true;
@@ -494,26 +604,26 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
     if (connectedAddress) {
       return shortAddress(connectedAddress);
     }
-    return "Connect ION Wallet";
+    return copy.connectWallet;
   }
 
   function heroWalletLabel() {
     if (connectedAddress) {
-      return "ION Wallet connected";
+      return copy.walletConnected;
     }
-    return "Connect ION Wallet";
+    return copy.connectWallet;
   }
 
   function textBody(message: string) {
     if (!runtime) {
-      throw new Error("Wallet runtime is still loading.");
+      throw new Error(copy.runtimeLoading);
     }
     return runtime.beginCell().storeUint(0, 32).storeStringTail(message).endCell().toBoc().toString("base64");
   }
 
   async function buyTicket(pool: PoolState) {
     const sent = await sendTransaction(
-      pool.key === "daily" ? "BuyDailyTicket" : "BuyWeeklyTicket",
+      pool.key === "daily" ? copy.dailyBuy : copy.weeklyBuy,
       pool.ticketPrice,
       textBody(pool.key === "daily" ? "BuyDailyTicket" : "BuyWeeklyTicket")
     );
@@ -524,7 +634,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
 
   async function drawPool(pool: PoolState) {
     if (!runtime) {
-      setStatus("Wallet runtime is still loading.");
+      setStatus(copy.runtimeLoading);
       return;
     }
     await sendTransaction(
@@ -568,11 +678,11 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
 
   return (
     <div className="app-shell">
-      <SideRail active="pools" />
+      <SideRail active="pools" locale={isAdmin ? "en" : locale} />
 
       <main className="dashboard">
         <header className="topbar">
-          <BrandLink />
+          <BrandLink locale={isAdmin ? "en" : locale} />
           <div className="topbar-actions">
             {isAdmin ? (
               <nav className="admin-switch" aria-label="Admin navigation">
@@ -583,7 +693,11 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
                   Admin
                 </Link>
               </nav>
-            ) : null}
+            ) : (
+              <Link className="nav-link" href={locale === "zh" ? "/" : "/zh"}>
+                {locale === "zh" ? "English" : "中文"}
+              </Link>
+            )}
             <button className="icon-button" type="button" title="Refresh" onClick={() => void loadState()}>
               <RefreshCw />
             </button>
@@ -609,9 +723,9 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
             <>
           <section className={`hero-band ${isAdmin ? "admin" : "user"}`}>
             <div className="eyebrow">
-              <Sparkles /> {isAdmin ? "Lottery operations" : "Daily and weekly ION pools"}
+              <Sparkles /> {isAdmin ? "Lottery operations" : copy.eyebrow}
             </div>
-            <h1>{isAdmin ? "Operate lottery pricing and retained fees." : "Play the daily and weekly ION lottery."}</h1>
+            <h1>{isAdmin ? "Operate lottery pricing and retained fees." : copy.title}</h1>
             {isAdmin ? (
               <div className="contract-strip">
                 <label>
@@ -646,7 +760,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
             ) : null}
           </section>
 
-          <section className="metrics-band" aria-label="Lottery metrics">
+          <section className="metrics-band" aria-label={isAdmin ? "Lottery metrics" : copy.lotteryMetrics}>
             {isAdmin ? (
               <>
                 <Metric label="Owner" value={state ? shortAddress(state.owner) : "Not loaded"} icon={<ShieldCheck />} />
@@ -656,15 +770,15 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
               </>
             ) : (
               <>
-                <Metric label="Daily ticket" value={state ? formatIon(state.daily.ticketPrice) : "1,000 ION"} icon={<Ticket />} />
-                <Metric label="Weekly ticket" value={state ? formatIon(state.weekly.ticketPrice) : "5,000 ION"} icon={<Trophy />} />
-                <Metric label="Wallet" value={connectedAddress ? shortAddress(connectedAddress) : "Not connected"} icon={<WalletCards />} />
-                <Metric label={state?.instantDraws ? "Test mode" : "Winner payout"} value={state?.instantDraws ? "Instant draws" : "80%"} icon={<CircleDollarSign />} />
+                <Metric label={copy.dailyTicket} value={state ? formatIon(state.daily.ticketPrice) : "1,000 ION"} icon={<Ticket />} />
+                <Metric label={copy.weeklyTicket} value={state ? formatIon(state.weekly.ticketPrice) : "5,000 ION"} icon={<Trophy />} />
+                <Metric label={copy.wallet} value={connectedAddress ? shortAddress(connectedAddress, copy.none) : copy.notConnected} icon={<WalletCards />} />
+                <Metric label={state?.instantDraws ? copy.testMode : copy.winnerPayout} value={state?.instantDraws ? copy.instantDraws : "80%"} icon={<CircleDollarSign />} />
               </>
             )}
           </section>
 
-          <section className="pool-grid" aria-label="Lottery pools">
+          <section className="pool-grid" aria-label={isAdmin ? "Lottery pools" : copy.lotteryPools}>
             {state ? (
               <PoolCard
                 pool={state.daily}
@@ -672,11 +786,12 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
                 instantDraws={state.instantDraws}
                 walletReady={walletReady()}
                 buyPending={pendingBuyRounds.daily !== undefined}
+                copy={copy}
                 onBuy={buyTicket}
                 onDraw={isAdmin ? drawPool : undefined}
               />
             ) : (
-              <PoolSkeleton title="Daily" />
+              <PoolSkeleton title={copy.daily} copy={copy} />
             )}
             {state ? (
               <PoolCard
@@ -685,11 +800,12 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
                 instantDraws={state.instantDraws}
                 walletReady={walletReady()}
                 buyPending={pendingBuyRounds.weekly !== undefined}
+                copy={copy}
                 onBuy={buyTicket}
                 onDraw={isAdmin ? drawPool : undefined}
               />
             ) : (
-              <PoolSkeleton title="Weekly" />
+              <PoolSkeleton title={copy.weekly} copy={copy} />
             )}
           </section>
 
@@ -738,7 +854,7 @@ export default function LotteryApp({ mode }: { mode: AppMode }) {
           )}
         </div>
 
-        <Footer />
+        <Footer locale={isAdmin ? "en" : locale} />
       </main>
     </div>
   );
@@ -825,6 +941,7 @@ function PoolCard({
   instantDraws,
   walletReady,
   buyPending,
+  copy,
   onBuy,
   onDraw
 }: {
@@ -833,6 +950,7 @@ function PoolCard({
   instantDraws: boolean;
   walletReady: boolean;
   buyPending: boolean;
+  copy: UserCopy;
   onBuy: (pool: PoolState) => Promise<void>;
   onDraw?: (pool: PoolState) => Promise<void>;
 }) {
@@ -846,57 +964,57 @@ function PoolCard({
       <div className="pool-glow" aria-hidden="true" />
       <div className="pool-top">
         <div className="pool-title">
-          <span>{pool.title}</span>
-          <h2>Round #{pool.round.toString()}</h2>
+          <span>{pool.key === "daily" ? copy.daily : copy.weekly}</span>
+          <h2>{copy.round} #{pool.round.toString()}</h2>
         </div>
-        <span className={`state-pill ${ready ? "ready" : ""}`}>
+        <span className={`state-pill ${instantDraws ? "test" : ready ? "ready" : "live"}`}>
           <span />
-          {instantDraws ? "Test mode" : ready ? "Draw open" : "Live"}
+          {instantDraws ? copy.testMode : ready ? copy.drawOpen : copy.live}
         </span>
       </div>
       <div className="pool-prize">
-        <span>Pool</span>
+        <span>{copy.pool}</span>
         <strong>
           {prize.amount} <small>{prize.unit}</small>
         </strong>
       </div>
       <div className="countdown-box">
-        <span>{instantDraws ? "Draw window" : countdownLabel(pool, now)}</span>
-        <strong>{instantDraws ? "Anytime" : countdownValue(pool, now)}</strong>
+        <span>{instantDraws ? copy.drawWindow : countdownLabel(pool, now, copy)}</span>
+        <strong>{instantDraws ? copy.anytime : countdownValue(pool, now, copy)}</strong>
       </div>
-      <dl className="pool-facts" aria-label={`${pool.title} details`}>
+      <dl className="pool-facts" aria-label={`${pool.key === "daily" ? copy.daily : copy.weekly} ${copy.pool}`}>
         <div>
-          <dt>Entries</dt>
+          <dt>{copy.entries}</dt>
           <dd>{pool.participantCount.toString()}</dd>
         </div>
         <div>
-          <dt>Ticket</dt>
+          <dt>{copy.ticket}</dt>
           <dd>{formatIon(pool.ticketPrice)}</dd>
         </div>
         {hasPendingPrice ? (
           <div>
-            <dt>Next ticket</dt>
+            <dt>{copy.nextTicket}</dt>
             <dd>{formatIon(pool.nextTicketPrice)}</dd>
           </div>
         ) : null}
         <div>
-          <dt>Last prize</dt>
+          <dt>{copy.lastPrize}</dt>
           <dd>{formatIon(pool.lastPrize)}</dd>
         </div>
         <div>
-          <dt>Last winner</dt>
-          <dd>{shortAddress(pool.lastWinner)}</dd>
+          <dt>{copy.lastWinner}</dt>
+          <dd>{shortAddress(pool.lastWinner, copy.none)}</dd>
         </div>
       </dl>
       <div className={`pool-actions ${onDraw ? "" : "single"}`}>
         <button className="primary-button" type="button" disabled={!walletReady || buyPending || entered || (ready && !instantDraws)} onClick={() => void onBuy(pool)}>
           {buyPending ? <span className="spinner button-spinner" /> : <Ticket />}
-          <span>{buyPending ? "Confirming" : entered ? "Entered" : "Buy ticket"}</span>
+          <span>{buyPending ? copy.confirming : entered ? copy.entered : copy.buyTicket}</span>
         </button>
         {onDraw ? (
           <button className="secondary-button" type="button" disabled={!walletReady || !ready} onClick={() => void onDraw(pool)}>
             <Trophy />
-            <span>Draw</span>
+            <span>{copy.draw}</span>
           </button>
         ) : null}
       </div>
@@ -904,37 +1022,37 @@ function PoolCard({
   );
 }
 
-function PoolSkeleton({ title }: { title: string }) {
+function PoolSkeleton({ title, copy }: { title: string; copy: UserCopy }) {
   return (
     <article className="pool-card skeleton">
       <div className="pool-glow" aria-hidden="true" />
       <div className="pool-top">
         <div className="pool-title">
           <span>{title}</span>
-          <h2>Round</h2>
+          <h2>{copy.round}</h2>
         </div>
         <span className="state-pill">
           <span />
-          Waiting
+          {copy.waiting}
         </span>
       </div>
       <div className="pool-prize">
-        <span>Pool</span>
+        <span>{copy.pool}</span>
         <strong>
           0 <small>ION</small>
         </strong>
       </div>
       <div className="countdown-box">
-        <span>Loading</span>
+        <span>{copy.loading}</span>
         <strong>--:--:--</strong>
       </div>
       <dl className="pool-facts">
         <div>
-          <dt>Entries</dt>
+          <dt>{copy.entries}</dt>
           <dd>0</dd>
         </div>
         <div>
-          <dt>Ticket</dt>
+          <dt>{copy.ticket}</dt>
           <dd>0 ION</dd>
         </div>
       </dl>
@@ -1115,9 +1233,9 @@ function compact(value: bigint) {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-function shortAddress(address: string | null | undefined) {
+function shortAddress(address: string | null | undefined, emptyLabel = "None") {
   if (!address) {
-    return "None";
+    return emptyLabel;
   }
   return `${address.slice(0, 7)}...${address.slice(-6)}`;
 }
@@ -1126,23 +1244,23 @@ function unlockLabel(pool: PoolState) {
   return new Date(Number(pool.drawUnlockAt) * 1000).toISOString().replace(".000Z", " UTC");
 }
 
-function countdownLabel(pool: PoolState, now: number) {
+function countdownLabel(pool: PoolState, now: number, copy: UserCopy) {
   if (now >= Number(pool.drawUnlockAt)) {
-    return "Ready";
+    return copy.ready;
   }
 
-  return pool.key === "daily" ? "Ends in" : "Draws in";
+  return pool.key === "daily" ? copy.endsIn : copy.drawsIn;
 }
 
-function countdownValue(pool: PoolState, now: number) {
+function countdownValue(pool: PoolState, now: number, copy: UserCopy) {
   const seconds = Math.max(0, Number(pool.drawUnlockAt) - now);
   if (seconds === 0) {
-    return "Draw open";
+    return copy.drawOpen;
   }
 
   const days = Math.floor(seconds / 86_400);
   if (days > 0) {
-    return `${days} ${days === 1 ? "day" : "days"}`;
+    return `${days} ${days === 1 ? copy.day : copy.days}`;
   }
 
   const hours = Math.floor(seconds / 3_600);

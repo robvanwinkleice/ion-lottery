@@ -5,28 +5,33 @@ import { FileText, History, Star, Trophy } from "lucide-react";
 import clubGlyph from "./images/club.svg";
 
 export type RailSection = "pools" | "history" | "winners" | "docs";
+export type Locale = "en" | "zh";
 
 const railItems: Array<{
   section: RailSection;
-  href: string;
-  label: string;
+  href: Record<Locale, string>;
+  label: Record<Locale, string>;
   icon: ReactNode;
 }> = [
-  { section: "pools", href: "/", label: "Pools", icon: <Star /> },
-  { section: "history", href: "/history", label: "History", icon: <History /> },
-  { section: "winners", href: "/winners", label: "Winners", icon: <Trophy /> },
-  { section: "docs", href: "/docs", label: "Docs", icon: <FileText /> }
+  { section: "pools", href: { en: "/", zh: "/zh" }, label: { en: "Pools", zh: "奖池" }, icon: <Star /> },
+  { section: "history", href: { en: "/history", zh: "/zh/history" }, label: { en: "History", zh: "历史" }, icon: <History /> },
+  { section: "winners", href: { en: "/winners", zh: "/zh/winners" }, label: { en: "Winners", zh: "获奖者" }, icon: <Trophy /> },
+  { section: "docs", href: { en: "/docs", zh: "/zh/docs" }, label: { en: "Docs", zh: "文档" }, icon: <FileText /> }
 ];
 
-export function SideRail({ active }: { active: RailSection }) {
+function hrefFor(section: RailSection, locale: Locale) {
+  return railItems.find((item) => item.section === section)?.href[locale] ?? "/";
+}
+
+export function SideRail({ active, locale = "en" }: { active: RailSection; locale?: Locale }) {
   return (
     <aside className="side-rail" aria-label="Primary navigation">
       {railItems.map((item) => (
         <Link
           key={item.section}
           className={`rail-button ${active === item.section ? "active" : "muted"}`}
-          href={item.href}
-          aria-label={item.label}
+          href={item.href[locale]}
+          aria-label={item.label[locale]}
           aria-current={active === item.section ? "page" : undefined}
         >
           {item.icon}
@@ -36,9 +41,9 @@ export function SideRail({ active }: { active: RailSection }) {
   );
 }
 
-export function BrandLink() {
+export function BrandLink({ locale = "en" }: { locale?: Locale }) {
   return (
-    <Link className="brand" href="/" aria-label="ION Lottery">
+    <Link className="brand" href={locale === "zh" ? "/zh" : "/"} aria-label="ION Lottery">
       <span className="brand-mark" aria-hidden="true">
         <img src={clubGlyph.src} alt="" />
       </span>
@@ -47,15 +52,15 @@ export function BrandLink() {
   );
 }
 
-export function Footer() {
+export function Footer({ locale = "en" }: { locale?: Locale }) {
   return (
     <footer className="footer">
-      <p>© 2026 ION Lottery Protocol. All rights reserved.</p>
+      <p>{locale === "zh" ? "© 2026 ION Lottery 协议。保留所有权利。" : "© 2026 ION Lottery Protocol. All rights reserved."}</p>
       <nav aria-label="Footer links">
-        <Link href="/docs">Whitepaper</Link>
-        <Link href="/docs">Terms</Link>
-        <Link href="/docs">Privacy</Link>
-        <Link href="/docs">Twitter</Link>
+        <Link href={locale === "zh" ? "/zh/docs" : "/docs"}>{locale === "zh" ? "白皮书" : "Whitepaper"}</Link>
+        <Link href={locale === "zh" ? "/zh/docs" : "/docs"}>{locale === "zh" ? "条款" : "Terms"}</Link>
+        <Link href={locale === "zh" ? "/zh/docs" : "/docs"}>{locale === "zh" ? "隐私" : "Privacy"}</Link>
+        <Link href={locale === "zh" ? "/zh/docs" : "/docs"}>Twitter</Link>
       </nav>
     </footer>
   );
@@ -65,22 +70,27 @@ export function StaticPageShell({
   active,
   eyebrow,
   title,
+  locale = "en",
   children
 }: {
   active: RailSection;
   eyebrow: ReactNode;
   title: string;
+  locale?: Locale;
   children: ReactNode;
 }) {
   return (
     <div className="app-shell">
-      <SideRail active={active} />
+      <SideRail active={active} locale={locale} />
       <main className="dashboard">
         <header className="topbar">
-          <BrandLink />
+          <BrandLink locale={locale} />
           <div className="topbar-actions">
-            <Link className="wallet-button" href="/">
-              Back to pools
+            <Link className="nav-link" href={hrefFor(active, locale === "zh" ? "en" : "zh")}>
+              {locale === "zh" ? "English" : "中文"}
+            </Link>
+            <Link className="wallet-button" href={locale === "zh" ? "/zh" : "/"}>
+              {locale === "zh" ? "返回奖池" : "Back to pools"}
             </Link>
           </div>
         </header>
@@ -91,7 +101,7 @@ export function StaticPageShell({
           </section>
           {children}
         </div>
-        <Footer />
+        <Footer locale={locale} />
       </main>
     </div>
   );
