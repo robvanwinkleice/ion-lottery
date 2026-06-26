@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ION Lottery Dashboard - SVG Hero Integration</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts for Modern Technical Theme -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Glassmorphism utility for custom accent layers not fully covered by tailwind */
+        .glass-panel {
+            background: rgba(22, 28, 34, 0.4); /* surface-container-low */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(221, 227, 236, 0.05); /* very faint on-surface */
+            border-top: 1px solid rgba(221, 227, 236, 0.1); /* top rim light */
+        }
+        
+        .glass-glow-button {
+            box-shadow: 0 0 20px rgba(99, 226, 250, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+        .glass-glow-button:hover {
+            box-shadow: 0 0 30px rgba(99, 226, 250, 0.4);
+        }
+    </style>
+<!-- Tailwind Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-secondary": "#00315f",
+                "on-primary-fixed-variant": "#004e5a",
+                "on-primary": "#00363e",
+                "on-secondary-fixed": "#001c3b",
+                "tertiary-fixed": "#ffdea3",
+                "tertiary-fixed-dim": "#f3be50",
+                "surface-tint": "#56d7ef",
+                "error": "#ffb4ab",
+                "surface-bright": "#343a41",
+                "primary": "#caf5ff",
+                "on-secondary-container": "#002a53",
+                "on-primary-fixed": "#001f25",
+                "on-secondary-fixed-variant": "#004786",
+                "on-primary-container": "#006371",
+                "on-error-container": "#ffdad6",
+                "surface-container-low": "#161c22",
+                "surface-variant": "#2f353c",
+                "surface": "#0e141a",
+                "on-background": "#dde3ec",
+                "primary-fixed": "#a2eeff",
+                "on-surface": "#dde3ec",
+                "tertiary": "#ffebcb",
+                "secondary": "#a6c8ff",
+                "primary-fixed-dim": "#56d7ef",
+                "error-container": "#93000a",
+                "background": "#0e141a",
+                "inverse-primary": "#006877",
+                "inverse-on-surface": "#2b3138",
+                "tertiary-container": "#ffc959",
+                "surface-container-high": "#252b31",
+                "primary-container": "#63e2fa",
+                "on-tertiary-fixed-variant": "#5d4200",
+                "surface-container-lowest": "#090f15",
+                "surface-container": "#1a2027",
+                "surface-container-highest": "#2f353c",
+                "on-tertiary-fixed": "#261900",
+                "on-error": "#690005",
+                "outline": "#869396",
+                "inverse-surface": "#dde3ec",
+                "secondary-fixed-dim": "#a6c8ff",
+                "outline-variant": "#3d494c",
+                "surface-dim": "#0e141a",
+                "secondary-fixed": "#d5e3ff",
+                "secondary-container": "#3192fc",
+                "on-surface-variant": "#bcc9cc",
+                "on-tertiary": "#412d00",
+                "on-tertiary-container": "#745400"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-mobile": "20px",
+                "base": "8px",
+                "margin-desktop": "64px",
+                "container-max": "1280px",
+                "gutter": "24px"
+        },
+        "fontFamily": {
+                "display-lg": [
+                        "Hanken Grotesk"
+                ],
+                "mono-data": [
+                        "Geist"
+                ],
+                "label-caps": [
+                        "Geist"
+                ],
+                "headline-lg": [
+                        "Hanken Grotesk"
+                ],
+                "headline-xl": [
+                        "Hanken Grotesk"
+                ],
+                "body-md": [
+                        "Hanken Grotesk"
+                ],
+                "display-lg-mobile": [
+                        "Hanken Grotesk"
+                ],
+                "body-lg": [
+                        "Hanken Grotesk"
+                ]
+        },
+        "fontSize": {
+                "display-lg": [
+                        "72px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "mono-data": [
+                        "14px",
+                        {
+                                "lineHeight": "1.4",
+                                "fontWeight": "500"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-xl": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex overflow-x-hidden relative">
+<!-- Ambient Background Glows -->
+<div class="fixed top-0 left-1/4 w-96 h-96 bg-primary-container/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="fixed bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary-container/5 rounded-full blur-3xl pointer-events-none"></div>
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex bg-surface-container-low/40 backdrop-blur-md h-full w-20 flex-col items-center py-8 border-r border-outline-variant/20 fixed left-0 top-0 bottom-0 z-40 gap-6">
+<!-- Tab: Pools (Active) -->
+<a aria-current="page" aria-label="Pools" class="bg-primary-container text-on-primary-container rounded-xl p-3 flex flex-col items-center justify-center group transition-all duration-150 hover:scale-105" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stars</span>
+</a>
+<!-- Tab: History -->
+<a aria-label="History" class="text-on-surface-variant p-3 rounded-xl flex flex-col items-center justify-center hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+</a>
+<!-- Tab: Winners -->
+<a aria-label="Winners" class="text-on-surface-variant p-3 rounded-xl flex flex-col items-center justify-center hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+</a>
+<!-- Tab: Docs -->
+<a aria-label="Docs" class="text-on-surface-variant p-3 rounded-xl flex flex-col items-center justify-center hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+</a>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-20 w-full min-h-screen flex flex-col relative z-10">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 sticky top-0 z-30">
+<!-- Brand -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary-container border border-outline-variant/30 shadow-lg">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">playing_cards</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">ION Lottery</h1>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button aria-label="Refresh" class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-white/5 transition-colors border border-outline-variant/20 glass-panel">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+<button class="bg-primary-container text-on-primary-container font-mono-data text-mono-data px-6 py-2.5 rounded-lg flex items-center gap-2 glass-glow-button hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+                    Connect
+                </button>
+</div>
+</header>
+<!-- Page Content Scroll Area -->
+<div class="flex-1 px-margin-mobile md:px-margin-desktop py-12 flex flex-col gap-12 max-w-container-max mx-auto w-full">
+<!-- Hero Section -->
+<section class="flex flex-col items-center gap-12 justify-center py-12">
+<!-- Text Column -->
+<div class="flex flex-col items-center gap-6 max-w-4xl mx-auto text-center">
+<div class="flex items-center gap-2 text-primary-fixed-dim font-label-caps text-label-caps tracking-widest uppercase">
+<span class="material-symbols-outlined text-[16px]">magic_button</span>
+                        DAILY AND WEEKLY ION POOLS
+                    </div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight text-balance">
+                        Play the daily and weekly ION lottery.
+                    </h2>
+<button class="mt-4 bg-primary-container text-on-primary-container font-mono-data text-mono-data px-8 py-3.5 rounded-xl flex items-center gap-2 glass-glow-button hover:opacity-90 active:scale-95 transition-all shadow-lg text-lg">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                        Connect wallet
+                    </button>
+</div>
+<!-- Graphic Column -->
+</section>
+<!-- Quick Stats -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full py-6">
+<!-- Stat Card 1 -->
+<div class="glass-panel rounded-xl p-5 flex items-center gap-4 hover:border-outline-variant/50 transition-colors w-full">
+<div class="w-10 h-10 rounded-lg bg-surface-dim flex items-center justify-center text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Daily ticket</span>
+<span class="font-body-lg text-body-lg font-bold text-on-surface mt-0.5">10,000 ION</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="glass-panel rounded-xl p-5 flex items-center gap-4 hover:border-outline-variant/50 transition-colors w-full">
+<div class="w-10 h-10 rounded-lg bg-surface-dim flex items-center justify-center text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[20px]">trophy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Weekly ticket</span>
+<span class="font-body-lg text-body-lg font-bold text-on-surface mt-0.5">100,000 ION</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="glass-panel rounded-xl p-5 flex items-center gap-4 hover:border-outline-variant/50 transition-colors w-full">
+<div class="w-10 h-10 rounded-lg bg-surface-dim flex items-center justify-center text-on-surface-variant border border-outline-variant/20">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Wallet</span>
+<span class="font-body-lg text-body-lg font-medium text-on-surface mt-0.5">Not connected</span>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="glass-panel rounded-xl p-5 flex items-center gap-4 hover:border-outline-variant/50 transition-colors w-full">
+<div class="w-10 h-10 rounded-lg bg-surface-dim flex items-center justify-center text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[20px]">monetization_on</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Winner payout</span>
+<span class="font-body-lg text-body-lg font-bold text-on-surface mt-0.5">80%</span>
+</div>
+</div>
+</section>
+<!-- Lottery Rounds (Bento Grid) -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full py-6">
+<!-- Daily Round Card -->
+<div class="glass-panel rounded-2xl p-8 flex flex-col gap-8 relative overflow-hidden group">
+<!-- Subtle background gradient hint -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-container/5 rounded-full blur-3xl group-hover:bg-primary-container/10 transition-colors duration-500 pointer-events-none"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim uppercase tracking-widest mb-2">Daily</span>
+<h3 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Round #412</h3>
+</div>
+<!-- Status Pill -->
+<div class="bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 flex items-center gap-2 shadow-inner">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-mono-data text-mono-data text-primary text-[12px]">Live</span>
+</div>
+</div>
+<div class="flex flex-col relative z-10">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Pool</span>
+<div class="font-display-lg text-display-lg text-on-surface tracking-tight flex items-baseline gap-2">
+                            14,250 <span class="font-headline-lg text-headline-lg text-on-surface-variant">ION</span>
+</div>
+</div>
+<!-- Countdown -->
+<div class="flex flex-col items-center justify-center p-6 rounded-xl bg-surface-dim border border-outline-variant/10 shadow-inner relative z-10">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2 tracking-widest">Ends in</span>
+<div class="font-mono-data text-[32px] md:text-[40px] font-bold text-primary tracking-wider">14:22:05</div>
+</div>
+</div>
+<!-- Weekly Round Card -->
+<div class="glass-panel rounded-2xl p-8 flex flex-col gap-8 relative overflow-hidden group">
+<!-- Subtle background gradient hint -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary-container/5 rounded-full blur-3xl group-hover:bg-secondary-container/10 transition-colors duration-500 pointer-events-none"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary-fixed-dim uppercase tracking-widest mb-2">Weekly</span>
+<h3 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Round #58</h3>
+</div>
+<!-- Status Pill -->
+<div class="bg-surface-dim border border-outline-variant/30 rounded-full px-4 py-1.5 flex items-center gap-2 shadow-inner">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+<span class="font-mono-data text-mono-data text-on-surface-variant text-[12px]">Waiting</span>
+</div>
+</div>
+<div class="flex flex-col relative z-10">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Pool</span>
+<div class="font-display-lg text-display-lg text-on-surface tracking-tight flex items-baseline gap-2">
+                            102,400 <span class="font-headline-lg text-headline-lg text-on-surface-variant">ION</span>
+</div>
+</div>
+<!-- Countdown -->
+<div class="flex flex-col items-center justify-center p-6 rounded-xl bg-surface-dim border border-outline-variant/10 shadow-inner relative z-10">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2 tracking-widest">Draws in</span>
+<div class="font-mono-data text-[32px] md:text-[40px] font-bold text-secondary tracking-wider">3 days</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="bg-background border-t border-outline-variant/10 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-8 gap-4 max-w-container-max mx-auto w-full">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    © 2024 ION Lottery Protocol. All rights reserved.
+                </p>
+<div class="flex items-center gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Whitepaper</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Twitter</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

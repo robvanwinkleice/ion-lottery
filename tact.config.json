@@ -1,0 +1,9 @@
+{
+  "projects": [
+    {
+      "name": "Lottery",
+      "path": "./contracts/lottery.tact",
+      "output": "./build/Lottery"
+    }
+  ]
+}

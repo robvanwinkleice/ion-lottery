@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - link "ION Lottery" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]: ION Lottery
+      - generic [ref=e8]:
+        - button "Refresh" [ref=e9] [cursor=pointer]:
+          - img [ref=e10]
+        - button [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - img [ref=e21]
+          - text: Daily and weekly ION pools
+        - heading "Play the daily and weekly ION lottery." [level=1] [ref=e24]
+        - button "Connect ION Wallet" [ref=e25] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e28]: Connect ION Wallet
+      - region "Lottery metrics" [ref=e29]:
+        - article [ref=e30]:
+          - img [ref=e32]
+          - generic [ref=e34]:
+            - generic [ref=e35]: Daily ticket
+            - strong [ref=e36]: 10,000 ION
+        - article [ref=e37]:
+          - img [ref=e39]
+          - generic [ref=e45]:
+            - generic [ref=e46]: Weekly ticket
+            - strong [ref=e47]: 100,000 ION
+        - article [ref=e48]:
+          - img [ref=e50]
+          - generic [ref=e53]:
+            - generic [ref=e54]: Wallet
+            - strong [ref=e55]: Not connected
+        - article [ref=e56]:
+          - img [ref=e58]
+          - generic [ref=e61]:
+            - generic [ref=e62]: Winner payout
+            - strong [ref=e63]: 80%
+      - region "Lottery pools" [ref=e64]:
+        - article [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - generic [ref=e68]: Daily
+              - heading "Round" [level=2] [ref=e69]
+            - generic [ref=e70]: Waiting
+          - generic [ref=e72]:
+            - generic [ref=e73]: Pool
+            - strong [ref=e74]: 0 ION
+          - generic [ref=e75]:
+            - generic [ref=e76]: Loading
+            - strong [ref=e77]: "--:--:--"
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - term [ref=e80]: Entries
+              - definition [ref=e81]: "0"
+            - generic [ref=e82]:
+              - term [ref=e83]: Ticket
+              - definition [ref=e84]: 0 ION
+        - article [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]: Weekly
+              - heading "Round" [level=2] [ref=e89]
+            - generic [ref=e90]: Waiting
+          - generic [ref=e92]:
+            - generic [ref=e93]: Pool
+            - strong [ref=e94]: 0 ION
+          - generic [ref=e95]:
+            - generic [ref=e96]: Loading
+            - strong [ref=e97]: "--:--:--"
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - term [ref=e100]: Entries
+              - definition [ref=e101]: "0"
+            - generic [ref=e102]:
+              - term [ref=e103]: Ticket
+              - definition [ref=e104]: 0 ION
+    - generic [ref=e105]:
+      - paragraph [ref=e106]: © 2026 ION Lottery Protocol. All rights reserved.
+      - navigation "Footer links" [ref=e107]:
+        - link "Whitepaper" [ref=e108] [cursor=pointer]:
+          - /url: "#"
+        - link "Terms" [ref=e109] [cursor=pointer]:
+          - /url: "#"
+        - link "Privacy" [ref=e110] [cursor=pointer]:
+          - /url: "#"
+        - link "Twitter" [ref=e111] [cursor=pointer]:
+          - /url: "#"
+  - alert [ref=e112]

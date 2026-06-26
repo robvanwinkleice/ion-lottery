@@ -1,0 +1,49 @@
+{
+  "name": "ion-lottery",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:contract && next build",
+    "build:contract": "tact --config tact.config.json",
+    "dev": "next dev -H 0.0.0.0",
+    "ui:build": "next build",
+    "preview": "next start -H 0.0.0.0",
+    "test": "vitest run",
+    "wallet": "tsx scripts/create-wallet.ts",
+    "faucet": "tsx scripts/claim-testnet-faucet.ts",
+    "preflight": "tsx scripts/preflight.ts",
+    "deploy": "tsx scripts/deploy.ts",
+    "read": "tsx scripts/read-lottery.ts",
+    "buy": "tsx scripts/buy-ticket.ts",
+    "draw": "tsx scripts/draw.ts",
+    "set-price": "tsx scripts/set-ticket-price.ts",
+    "withdraw": "tsx scripts/withdraw-fees.ts"
+  },
+  "dependencies": {
+    "@ton/core": "0.63.1",
+    "@ton/crypto": "3.3.0",
+    "@ton/ton": "16.3.0",
+    "buffer": "^6.0.3",
+    "dotenv": "16.4.7",
+    "lucide-react": "^1.21.0",
+    "next": "^16.2.9",
+    "postcss": "^8.5.10",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tact-lang/compiler": "^1.6.13",
+    "@ton/sandbox": "0.39.0",
+    "@ton/test-utils": "0.7.0",
+    "@types/node": "24.0.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vitest": "^4.1.9"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  }
+}

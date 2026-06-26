@@ -1,0 +1,97 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "ION Lottery" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: ION
+      - generic [ref=e5]: Lottery
+    - generic [ref=e6]:
+      - button "Refresh" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+      - button "Connect" [ref=e13] [cursor=pointer]:
+        - img [ref=e14]
+        - generic [ref=e16]: Connect
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - img [ref=e21]
+          - text: Daily and weekly ION pools
+        - heading "Lottery control surface for players and operators." [level=1] [ref=e24]
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - text: Contract
+            - textbox "Contract" [ref=e27]:
+              - /placeholder: EQ...
+          - generic [ref=e28]:
+            - text: Endpoint
+            - textbox "Endpoint" [ref=e29]: https://api.mainnet.ice.io/http/v2/jsonRPC
+          - button "Load" [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - generic [ref=e36]: Load
+        - generic [ref=e38]: Ready.
+      - figure [ref=e39]:
+        - img "Ice crystal lottery network visual" [ref=e40]
+    - generic [ref=e41]:
+      - article [ref=e42]:
+        - img [ref=e43]
+        - generic [ref=e46]: Owner
+        - strong [ref=e47]: Not loaded
+      - article [ref=e48]:
+        - img [ref=e49]
+        - generic [ref=e52]: Retained fees
+        - strong [ref=e53]: 0 ION
+      - article [ref=e54]:
+        - img [ref=e55]
+        - generic [ref=e58]: Wallet
+        - strong [ref=e59]: Disconnected
+      - article [ref=e60]:
+        - img [ref=e61]
+        - generic [ref=e63]: Access
+        - strong [ref=e64]: Customer
+    - generic [ref=e65]:
+      - article [ref=e66]:
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e69]: Daily
+            - heading "Round" [level=2] [ref=e70]
+          - generic [ref=e71]: Waiting
+        - generic [ref=e72]:
+          - generic [ref=e73]: Pool
+          - strong [ref=e74]: 0 ION
+      - article [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]: Weekly
+            - heading "Round" [level=2] [ref=e80]
+          - generic [ref=e81]: Waiting
+        - generic [ref=e82]:
+          - generic [ref=e83]: Pool
+          - strong [ref=e84]: 0 ION
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - img [ref=e90]
+            - text: Owner
+          - heading "Pricing and retained fees" [level=2] [ref=e93]
+        - button "Withdraw" [disabled] [ref=e94]:
+          - img [ref=e95]
+          - generic [ref=e97]: Withdraw
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]: Daily next price
+          - generic [ref=e101]:
+            - textbox "Daily next price" [disabled] [ref=e102]:
+              - /placeholder: "0"
+            - button "Set" [disabled] [ref=e103]:
+              - img [ref=e104]
+              - generic [ref=e107]: Set
+        - generic [ref=e108]:
+          - generic [ref=e109]: Weekly next price
+          - generic [ref=e110]:
+            - textbox "Weekly next price" [disabled] [ref=e111]:
+              - /placeholder: "0"
+            - button "Set" [disabled] [ref=e112]:
+              - img [ref=e113]
+              - generic [ref=e116]: Set
+  - alert [ref=e117]
