@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const LOCALE_COOKIE = "ion-lottery-locale";
+const LOCALE_COOKIE = "ion-lottery-locale-choice";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 const englishToChinese: Record<string, string> = {
@@ -26,16 +26,6 @@ export function proxy(request: NextRequest) {
     return response;
   }
 
-  if (pathname.startsWith("/zh")) {
-    const response = NextResponse.next();
-    response.cookies.set(LOCALE_COOKIE, "zh", {
-      maxAge: COOKIE_MAX_AGE,
-      path: "/",
-      sameSite: "lax"
-    });
-    return response;
-  }
-
   const preferredLocale = request.cookies.get(LOCALE_COOKIE)?.value ?? localeFromAcceptLanguage(request.headers.get("accept-language"));
   const chinesePath = englishToChinese[pathname];
 
@@ -43,13 +33,7 @@ export function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = chinesePath;
 
-    const response = NextResponse.redirect(url);
-    response.cookies.set(LOCALE_COOKIE, "zh", {
-      maxAge: COOKIE_MAX_AGE,
-      path: "/",
-      sameSite: "lax"
-    });
-    return response;
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
