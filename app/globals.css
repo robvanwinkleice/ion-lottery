@@ -854,9 +854,15 @@ input:focus {
   align-items: start;
 }
 
-.winners-summary .status-line {
+.winners-summary .status-line,
+.history-summary .status-line {
   grid-column: 1 / -1;
   margin-top: 0;
+}
+
+.history-summary {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
 }
 
 .compact-button {
@@ -945,6 +951,39 @@ input:focus {
 
 .winner-link:hover {
   background: rgba(202, 245, 255, 0.14);
+}
+
+.history-card,
+.current-round-card {
+  gap: 22px;
+}
+
+.history-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.history-card-top svg {
+  color: var(--primary-fixed-dim);
+}
+
+.history-highlight {
+  display: grid;
+  gap: 6px;
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(202, 245, 255, 0.06);
+}
+
+.history-highlight span {
+  color: var(--on-surface-variant);
+  font-size: 14px;
+}
+
+.history-highlight strong {
+  font-size: 32px;
 }
 
 .footer {
@@ -1049,6 +1088,7 @@ input:focus {
   .metrics-band,
   .info-grid,
   .winners-summary,
+  .history-summary,
   .access-details,
   .pool-facts,
   .pool-actions,
