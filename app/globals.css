@@ -849,6 +849,104 @@ input:focus {
   line-height: 1.2;
 }
 
+.winners-summary {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.winners-summary .status-line {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.compact-button {
+  min-height: 44px;
+  padding: 0 16px;
+}
+
+.winner-card {
+  gap: 22px;
+}
+
+.winner-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.winner-card-top svg {
+  color: var(--primary-fixed-dim);
+}
+
+.winner-pool {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 12px;
+  color: var(--on-surface);
+  background: var(--surface-container-high);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.winner-pool.daily {
+  background: rgba(86, 215, 239, 0.14);
+}
+
+.winner-pool.weekly {
+  background: rgba(166, 200, 255, 0.14);
+}
+
+.winner-details {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.winner-details div {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.4fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.winner-details dt {
+  color: var(--on-surface-variant);
+  font-size: 14px;
+}
+
+.winner-details dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--on-surface);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.winner-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 0 12px;
+  color: var(--primary);
+  background: rgba(202, 245, 255, 0.08);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.winner-link:hover {
+  background: rgba(202, 245, 255, 0.14);
+}
+
 .footer {
   margin-top: auto;
   border-top: 1px solid rgba(61, 73, 76, 0.18);
@@ -950,6 +1048,7 @@ input:focus {
   .contract-strip,
   .metrics-band,
   .info-grid,
+  .winners-summary,
   .access-details,
   .pool-facts,
   .pool-actions,
